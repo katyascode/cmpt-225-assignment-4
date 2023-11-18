@@ -18,22 +18,20 @@
 #include <stdbool.h>
 
 template <class ElementType>
-class Queue {
+class Queue { 
 
     private:
         class Node {
 
             public:
-                ElementType & element; 
+                ElementType element; 
                 Node* next;
-
-                Node(); 
-                Node(ElementType & newElement);
-                ~Node();
+                Node(const ElementType & newElement) : element(newElement), next(nullptr) {}
         };
 
-        Node* queueHead;
-        unsigned int queueSize; 
+        Node* head;
+        Node* tail; 
+        unsigned int elementCount = 0; 
 
         /* Getter Methods */
 

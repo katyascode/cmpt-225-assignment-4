@@ -22,7 +22,7 @@
 // Time Efficiency: O(1)
 template <class ElementType>
 Queue<ElementType>::Queue() {
-    queueHead = nullptr;
+    head = nullptr;
 }
 
 
@@ -31,29 +31,10 @@ Queue<ElementType>::Queue() {
 // Time efficiency: O(n)
 template <class ElementType>
 Queue<ElementType>::~Queue() {
-    while (queueHead != nullptr) {
-        Node* temp = queueHead; 
-        queueHead = queueHead->next; 
-        delete temp; 
+    while (head != nullptr) {
+        dequeue();
     }
 }
-
-template <class ElementType>
-Queue<ElementType>::Node::Node() {
-    next = nullptr;
-}
-
-template <class ElementType>
-Queue<ElementType>::Node::Node(ElementType & newElement) {
-    element = newElement; 
-    next = nullptr;
-}
-
-template <class ElementType>
-Queue<ElementType>::Node::~Node() {
-    next = nullptr;
-}
-
 
 /* Member Methods */
 
@@ -63,7 +44,7 @@ Queue<ElementType>::Node::~Node() {
 // Time Efficiency: O(1)
 template <class ElementType>
 bool Queue<ElementType>::isEmpty() const {
-    return (queueHead == nullptr);
+    return (elementCount == 0);
 }
 
 // Description: Returns true if this Queue is empty, otherwise false.
@@ -73,20 +54,20 @@ template <class ElementType>
 bool Queue<ElementType>::enqueue(ElementType & newElement) {
     //Create a new node containing the element
     Node* newNode = new Node(newElement);
+    if (newNode == nullptr) {
+        return false; //Memory allocation failed.
+    }
 
     //If empty, the head is the only element in the queue. 
     if (isEmpty()) {
-        queueHead = newNode; 
+        head = newNode;
+        tail = newNode;  
     }
 
-    //Otherwise, traverse to the back of the linked list
-    Node* current = queueHead; 
-    while (current->next != nullptr) {
-        current = current->next; 
-    }
-
-    //Append element to the back. 
-    current->next = newNode;
+    //Otherwise, append to the back of the linked list
+    tail->next = newNode; 
+    tail = newNode; 
+    elementCount++;
     return true;
 }
 
@@ -102,9 +83,15 @@ void Queue<ElementType>::dequeue() {
         throw EmptyDataCollectionException("Queue empty. No elements to remove.");
     }
 
-    Node* temp = queueHead; 
-    queueHead = temp->next; 
-    delete temp; 
+    Node* dequeueNode = head; 
+    head = head->next; 
+    delete dequeueNode;
+    elementCount--; 
+
+    if (isEmpty()) {
+        head = nullptr;
+        tail = nullptr; 
+    }
 }
 
 // Description: Returns (but does not remove) the element at the "front" of this Queue
@@ -118,5 +105,5 @@ ElementType& Queue<ElementType>::peek() const {
     if (isEmpty()) {
         throw EmptyDataCollectionException("Queue empty. No elements to peek.");
     }
-    return queueHead->element; 
+    return head->element; 
 }
