@@ -7,14 +7,20 @@
  * 
  * Date last modified: Nov 19 2023 
  */
+
 #include <iostream>
-#include "Event.h"
-#include "Queue.h"
-#include "PriorityQueue.h" // Also includes "BinaryHeap.h"
+#include <iomanip> // Formatting header file for input-output. Included for setw() function. 
+#include "Event.h" // Event class required for our algorithm.
+#include "Queue.h" // Queue ADT template class
+#include "PriorityQueue.h" // Priority Queue ADT template class
+                           // Includes ADT template class "BinaryHeap.h" and "BinaryHeap.cpp"
 
 using std::cout; 
 using std::cin;
+using std::endl;
+using std::right;
 
+// Global variables to be updated throughout simulate(), processArrival(), and processDeparture()
 bool tellerAvailable = false;
 int currentTime = 0;
 int totalWaitTime = 0;
@@ -25,18 +31,14 @@ void simulate();
 void processArrival(Event& arrivalEvent, PriorityQueue<Event>* eventPriorityQueue, Queue<Event>* bankLine);
 void processDeparture(Event& departureEvent, PriorityQueue<Event>* eventPriorityQueue, Queue<Event>* bankLine);
 
+// main() only runs simulate(). 
 int main() {
-    /* Need: 
-     * Total number of people processed 
-     * Average amount of time spent waiting 
-     * cout Simulation Begins at the start; Simulation Ends at the end 
-     * Processing an arrival event at time: 
-     * Processing a departure event at time: */
     simulate();
     return 0;
 }
 
 void simulate() {
+    // Create an empty bankLine and eventPriorityQueue. 
     Queue<Event>* bankLine = new Queue<Event>(); 
     PriorityQueue<Event>* eventPriorityQueue = new PriorityQueue<Event>();
     tellerAvailable = true; 
@@ -56,7 +58,7 @@ void simulate() {
         totalCustomers++;
     }
 
-    // Event loop
+    // Event loop that begins all event processing & statistic accumulation
     while(!eventPriorityQueue->isEmpty()) {
         Event newEvent = eventPriorityQueue->peek(); 
         currentTime = newEvent.getTime();
@@ -71,13 +73,12 @@ void simulate() {
     cout << "Simulation Ends" << std::endl;
 
     // Produce final stats
-    cout << "\nFinal Statistics:\n";
-    cout << "\tTotal number of people processed: " << totalCustomers << std::endl;
+    cout << "\nFinal Statistics:\n\n";
+    cout << "\tTotal number of people processed: " << totalCustomers << endl;
     if (totalCustomers > 0) {
         averageCustomerWaitTime = static_cast<double>(totalWaitTime) / totalCustomers;
-        cout << "\tAverage amount of time spent waiting: " << averageCustomerWaitTime << std::endl;
+        cout << "\tAverage amount of time spent waiting: " << averageCustomerWaitTime << "\n" << endl;
     }
-
 }
 
 void processArrival(Event& arrivalEvent, PriorityQueue<Event>* eventPriorityQueue, Queue<Event>* bankLine) {
@@ -90,10 +91,10 @@ void processArrival(Event& arrivalEvent, PriorityQueue<Event>* eventPriorityQueu
         eventPriorityQueue->enqueue(newDepartureEvent);
         tellerAvailable = false;
     } else {
-        bankLine->enqueue(customer); // Customer??? What values goes here 
+        bankLine->enqueue(customer); 
     }
-    currentTime = customer.getTime();
-    cout << "Processing an arrival event at time:  " << customer.getTime() << std::endl;
+ 
+    cout << "Processing an arrival event at time:    " << std::setw(2) << right << currentTime << endl;
 }
 
 void processDeparture(Event& departureEvent, PriorityQueue<Event>* eventPriorityQueue, Queue<Event>* bankLine) {
@@ -105,7 +106,7 @@ void processDeparture(Event& departureEvent, PriorityQueue<Event>* eventPriority
         bankLine->dequeue(); 
 
         departureTime = currentTime + customer.getLength();
-        totalWaitTime += (departureTime - customer.getTime());
+        totalWaitTime += (currentTime - customer.getTime());
 
         Event newDepartureEvent = Event('D', departureTime);
         eventPriorityQueue->enqueue(newDepartureEvent);
@@ -113,5 +114,5 @@ void processDeparture(Event& departureEvent, PriorityQueue<Event>* eventPriority
         tellerAvailable = true;
     }
 
-    cout << "Processing a departure event at time: " << departureTime << std::endl;
+    cout << "Processing a departure event at time:   " << std::setw(2) << right << currentTime << endl;
 }

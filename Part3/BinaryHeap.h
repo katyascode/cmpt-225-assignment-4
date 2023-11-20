@@ -61,7 +61,7 @@ class BinaryHeap {
         // Time Efficiency: O(1) 
         ElementType & retrieve() const;
 
-        //void print(); 
+        void print(); 
 };
  
 #include "BinaryHeap.cpp"

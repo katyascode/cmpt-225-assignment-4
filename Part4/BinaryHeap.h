@@ -1,15 +1,16 @@
 /* 
  * BinaryHeap.h
  *
- * Description: Minimum Binary Heap ADT class.
+ * Description: Minimum Binary Heap Template ADT class.
  *
  * Class Invariant:  Always a minimum Binary Heap.
  * 
  * Author: Katya Kubyshkin
  * 
- * Last Modification: Nov 18 2023
+ * Last Modification: Nov 19 2023
  *
  */  
+
 #ifndef BINARYHEAP_H
 #define BINARYHEAP_H
 
@@ -20,7 +21,7 @@ class BinaryHeap {
     
     private:
         ElementType* elements;
-        unsigned int capacity;
+        unsigned int capacity = 10; // Default capacity
         unsigned int elementCount;
 
         // Helper functions
@@ -30,13 +31,16 @@ class BinaryHeap {
         void swap(ElementType *a, ElementType *b); 
 
     public:
+        /* Constructors and Destructors */
+
         // Description: Constructor
         BinaryHeap(); 
 
         // Description: Destructor
         ~BinaryHeap();
+        
 
-        /* Provided Public Interface */
+        /* Public Interface */
 
         // Description: Returns the number of elements in the Binary Heap.
         // Postcondition: The Binary Heap is unchanged by this operation.
@@ -61,7 +65,8 @@ class BinaryHeap {
         // Time Efficiency: O(1) 
         ElementType & retrieve() const;
 
-        //void print(); 
+        // Description: print() method for testing purposes
+        // void print(); 
 };
  
 #include "BinaryHeap.cpp"

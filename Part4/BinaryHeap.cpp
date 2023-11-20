@@ -1,13 +1,13 @@
 /* 
  * BinaryHeap.cpp
  *
- * Description: Minimum Binary Heap ADT class.
+ * Description: Minimum Binary Heap ADT template class.
  *
  * Class Invariant:  Always a minimum Binary Heap.
  * 
  * Author: Anne Lavergne, Katya Kubyshkin
  * 
- * Last Modification: Nov 18 2023
+ * Last Modification: Nov 19 2023
  *
  */  
 
@@ -17,7 +17,10 @@
 
 using std::cout;
 
-// Description: Doubles size of array if given array is full.
+/* Private Methods */
+
+// Description: Doubles size of array and copies over data if given array is full.
+// Time Efficiency: O(n)
 template <class ElementType>
 void BinaryHeap<ElementType>::resize(){
    // Create a new heap double the size of the original. 
@@ -40,7 +43,7 @@ void BinaryHeap<ElementType>::reHeapUp(unsigned int indexOfMinChild) {
    while (indexOfMinChild > 0) {
       unsigned int indexOfParent = (indexOfMinChild-1)/2;
 
-      if (elements[indexOfMinChild] < elements[indexOfParent]) {
+      if (elements[indexOfMinChild] <= elements[indexOfParent]) {
          //Swap the two elements. 
          swap(&elements[indexOfMinChild], &elements[indexOfParent]);
 
@@ -52,8 +55,8 @@ void BinaryHeap<ElementType>::reHeapUp(unsigned int indexOfMinChild) {
    }
 }
 
-// Utility method
-// Description: Recursively put the array back into a Minimum Binary Heap.
+// Description: Utility method. Recursively put the array back into a Minimum Binary Heap.
+// Time Efficiency: O(log2 n)
 template <class ElementType>
 void BinaryHeap<ElementType>::reHeapDown(unsigned int indexOfRoot) {
    
@@ -88,7 +91,8 @@ void BinaryHeap<ElementType>::reHeapDown(unsigned int indexOfRoot) {
    return;
 } 
 
-// Description: Swap function for reHeapUp and reHeapDown functions. 
+// Description: Swap function for reHeapUp and reHeapDown functions.
+// Time Efficiency: O(1) 
 template <class ElementType>
 void BinaryHeap<ElementType>::swap(ElementType* a, ElementType* b) {
    ElementType temp = *a; 
@@ -112,6 +116,7 @@ template <class ElementType>
 BinaryHeap<ElementType>::~BinaryHeap() {
     delete[] elements; 
 }
+
 
 /* Public Methods & Interface */
 
@@ -137,7 +142,6 @@ bool BinaryHeap<ElementType>::insert(ElementType & newElement) {
    reHeapUp(elementCount-1);
    return true; 
 }
-
 
 // Description: Removes (but does not return) the necessary element.
 // Precondition: This Binary Heap is not empty.
@@ -173,7 +177,7 @@ ElementType & BinaryHeap<ElementType>::retrieve() const {
    return elements[0];
 }
 
-/* 
+/*
 // Description: print() method for testing purposes. 
 // Time Efficiency: O(n)
 template <class ElementType>
@@ -183,5 +187,5 @@ void BinaryHeap<ElementType>::print() {
       cout << elements[i] << " ";
    }
    cout << "}";
-} 
+}
 */

@@ -173,7 +173,6 @@ ElementType & BinaryHeap<ElementType>::retrieve() const {
    return elements[0];
 }
 
-/* 
 // Description: print() method for testing purposes. 
 // Time Efficiency: O(n)
 template <class ElementType>
@@ -183,5 +182,4 @@ void BinaryHeap<ElementType>::print() {
       cout << elements[i] << " ";
    }
    cout << "}";
-} 
-*/
+}

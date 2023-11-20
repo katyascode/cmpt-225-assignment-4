@@ -1,7 +1,7 @@
 /* 
  * PriorityQueue.h
  * 
- * Description: Header file for the Priority Queue class.
+ * Description: Header file for the Priority Queue template ADT class.
  * 
  * Author: Katya Kubyshkin 
  * 
@@ -19,13 +19,15 @@ class PriorityQueue {
         BinaryHeap<ElementType> binaryHeap; 
 
     public:
+        /* Constructors and Destructors */
+
         // Description: Constructor
         PriorityQueue();
 
-        /********* PARAMETRIZED CONSTRUCTOR ? **********/
-
         // Description: Destructor
         ~PriorityQueue();
+
+        /* Public Interface */
 
         // Description: Returns true if this Priority Queue is empty, otherwise false.
         // Postcondition: This Priority Queue is unchanged by this operation.
